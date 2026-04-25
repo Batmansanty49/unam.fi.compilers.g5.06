@@ -1,0 +1,21 @@
+FIRST sets:
+FIRST(DECLARATION) = {char, double, float, int}
+FIRST(DECLARATION_PRIME) = {;, =}
+FIRST(EXPRESSION) = {(, constant, identifier}
+FIRST(EXPRESSION_PRIME) = {+, -, ε}
+FIRST(FACTOR) = {(, constant, identifier}
+FIRST(S) = {char, double, float, int}
+FIRST(TERM) = {(, constant, identifier}
+FIRST(TERM_PRIME) = {*, /, ε}
+FIRST(TYPE) = {char, double, float, int}
+
+FOLLOW sets:
+FOLLOW(DECLARATION) = {$}
+FOLLOW(DECLARATION_PRIME) = {$}
+FOLLOW(EXPRESSION) = {), ;}
+FOLLOW(EXPRESSION_PRIME) = {), ;}
+FOLLOW(FACTOR) = {), *, +, -, /, ;}
+FOLLOW(S) = {$}
+FOLLOW(TERM) = {), +, -, ;}
+FOLLOW(TERM_PRIME) = {), +, -, ;}
+FOLLOW(TYPE) = {identifier}

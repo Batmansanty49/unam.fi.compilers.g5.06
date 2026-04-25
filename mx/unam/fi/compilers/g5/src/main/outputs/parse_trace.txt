@@ -1,0 +1,33 @@
+step	stack	input	action
+1	$ DECLARATION	int identifier = ( constant + constant ) * constant ; $	apply S -> DECLARATION
+2	$ DECLARATION_PRIME identifier TYPE	int identifier = ( constant + constant ) * constant ; $	apply DECLARATION -> TYPE identifier DECLARATION_PRIME
+3	$ DECLARATION_PRIME identifier int	int identifier = ( constant + constant ) * constant ; $	apply TYPE -> int
+4	$ DECLARATION_PRIME identifier int	int identifier = ( constant + constant ) * constant ; $	match int
+5	$ DECLARATION_PRIME identifier	identifier = ( constant + constant ) * constant ; $	match identifier
+6	$ ; EXPRESSION =	= ( constant + constant ) * constant ; $	apply DECLARATION_PRIME -> = EXPRESSION ;
+7	$ ; EXPRESSION =	= ( constant + constant ) * constant ; $	match =
+8	$ ; EXPRESSION_PRIME TERM	( constant + constant ) * constant ; $	apply EXPRESSION -> TERM EXPRESSION_PRIME
+9	$ ; EXPRESSION_PRIME TERM_PRIME FACTOR	( constant + constant ) * constant ; $	apply TERM -> FACTOR TERM_PRIME
+10	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION (	( constant + constant ) * constant ; $	apply FACTOR -> ( EXPRESSION )
+11	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION (	( constant + constant ) * constant ; $	match (
+12	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM	constant + constant ) * constant ; $	apply EXPRESSION -> TERM EXPRESSION_PRIME
+13	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME FACTOR	constant + constant ) * constant ; $	apply TERM -> FACTOR TERM_PRIME
+14	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME constant	constant + constant ) * constant ; $	apply FACTOR -> constant
+15	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME constant	constant + constant ) * constant ; $	match constant
+16	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME	+ constant ) * constant ; $	apply TERM_PRIME -> ε
+17	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM +	+ constant ) * constant ; $	apply EXPRESSION_PRIME -> + TERM EXPRESSION_PRIME
+18	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM +	+ constant ) * constant ; $	match +
+19	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME FACTOR	constant ) * constant ; $	apply TERM -> FACTOR TERM_PRIME
+20	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME constant	constant ) * constant ; $	apply FACTOR -> constant
+21	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME TERM_PRIME constant	constant ) * constant ; $	match constant
+22	$ ; EXPRESSION_PRIME TERM_PRIME ) EXPRESSION_PRIME	) * constant ; $	apply TERM_PRIME -> ε
+23	$ ; EXPRESSION_PRIME TERM_PRIME )	) * constant ; $	apply EXPRESSION_PRIME -> ε
+24	$ ; EXPRESSION_PRIME TERM_PRIME )	) * constant ; $	match )
+25	$ ; EXPRESSION_PRIME TERM_PRIME FACTOR *	* constant ; $	apply TERM_PRIME -> * FACTOR TERM_PRIME
+26	$ ; EXPRESSION_PRIME TERM_PRIME FACTOR *	* constant ; $	match *
+27	$ ; EXPRESSION_PRIME TERM_PRIME constant	constant ; $	apply FACTOR -> constant
+28	$ ; EXPRESSION_PRIME TERM_PRIME constant	constant ; $	match constant
+29	$ ; EXPRESSION_PRIME	; $	apply TERM_PRIME -> ε
+30	$ ;	; $	apply EXPRESSION_PRIME -> ε
+31	$ ;	; $	match ;
+32	$	$	accept

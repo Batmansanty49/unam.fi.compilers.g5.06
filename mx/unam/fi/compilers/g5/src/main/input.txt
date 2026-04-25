@@ -1,2 +1,1 @@
-printf("This is an example");
-int a = 10;
+int result = (3+5)*2;
