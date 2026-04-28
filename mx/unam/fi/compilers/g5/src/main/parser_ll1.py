@@ -363,12 +363,12 @@ def _analyze_declaration(
         _mark(node, "ok" if not errors else "error", declared_type)
 
     ast_children = [
-        TreeNode("Type", lexeme=declared_type),
-        TreeNode("Identifier", lexeme=name),
+        TreeNode(declared_type),
+        TreeNode(name),
     ]
     if initializer_ast is not None:
         ast_children.append(initializer_ast)
-    return TreeNode("Declaration", children=ast_children)
+    return TreeNode("=", children=ast_children)
 
 
 def _analyze_type(node: TreeNode) -> str:
@@ -410,7 +410,7 @@ def _fold_expression_prime(
 
     result_type = _combine_numeric_types(current_type, right_type, operator_node.lexeme or operator_node.symbol, errors)
     result_ast = (
-        TreeNode("BinaryOp", lexeme=operator_node.lexeme, children=[current_ast, right_ast])
+        TreeNode(operator_node.lexeme, children=[current_ast, right_ast])
         if current_ast is not None and right_ast is not None
         else None
     )
@@ -450,7 +450,7 @@ def _fold_term_prime(
 
     result_type = _combine_numeric_types(current_type, right_type, operator_node.lexeme or operator_node.symbol, errors)
     result_ast = (
-        TreeNode("BinaryOp", lexeme=operator_node.lexeme, children=[current_ast, right_ast])
+        TreeNode(operator_node.lexeme, children=[current_ast, right_ast])
         if current_ast is not None and right_ast is not None
         else None
     )
@@ -477,13 +477,13 @@ def _analyze_factor(
         inferred_type = symbol["declared_type"]
         _mark(first_child, "ok", inferred_type)
         _mark(node, "ok", inferred_type)
-        return inferred_type, TreeNode("Identifier", lexeme=name)
+        return inferred_type, TreeNode(name)
 
     if first_child.symbol == "constant":
         inferred_type = _infer_constant_type(first_child.lexeme or "")
         _mark(first_child, "ok", inferred_type)
         _mark(node, "ok", inferred_type)
-        return inferred_type, TreeNode("Constant", lexeme=first_child.lexeme)
+        return inferred_type, TreeNode(first_child.lexeme)
 
     expression_node = node.children[1]
     expr_type, expr_ast = _analyze_expression(expression_node, symbol_table, errors)
